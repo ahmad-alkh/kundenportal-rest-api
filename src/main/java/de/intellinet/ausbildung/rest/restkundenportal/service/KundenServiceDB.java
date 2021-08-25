@@ -99,7 +99,6 @@ public class KundenServiceDB implements IKundenService {
         for (Person person : personen) {
             personenDTO.add(MappingUtils.mappePersonDTO(person));
         }
-
         return personenDTO;
     }
 
