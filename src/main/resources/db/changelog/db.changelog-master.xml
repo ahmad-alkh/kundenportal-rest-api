@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+                       http://www.liquibase.org/xml/ns/dbchangelog 
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+
+	<changeSet author="ahmalk" id="anlage_struktur">
+		<createTable tableName="kunde_person">
+			<column name="id" autoIncrement="true" type="BIGINT">
+				<constraints primaryKey="true" />
+			</column>
+			<column defaultValueNumeric="0" name="version" type="INT" />
+			<column name="uuid" type="varchar(255)"></column>
+			<column name="anrede" type="varchar(5)"></column>
+			<column name="name" type="varchar(255)"></column>
+			<column name="vorname" type="varchar(255)"></column>
+			<column name="geburtsname" type="varchar(255)"></column>
+			<column name="geburtsort" type="varchar(255)"></column>
+			<column name="staatsangehoerigkeit" type="varchar(2)"></column>
+			<column name="geburtsdatum" type="DATE"></column>
+			<column name="anlagedatum" type="DATETIME"></column>
+			<column name="aenderungsdatum" type="DATETIME"></column>
+
+		</createTable>
+		<createTable tableName="kunde_kontakt">
+				<column name="id" autoIncrement="true" type="BIGINT">
+				<constraints primaryKey="true"/>
+			</column>
+			<column defaultValueNumeric="0" name="version" type="INT" />
+			<column name="email" type="varchar(255)"></column>
+			<column name="telefon" type="varchar(255)"></column>
+			<column name="mobil" type="varchar(255)"></column>
+			<column name="person_id" type="BIGINT"></column>
+		</createTable>
+
+		<createTable tableName="kunde_adresse">
+			<column name="id" autoIncrement="true" type="BIGINT">
+				<constraints primaryKey="true"/>
+			</column>
+			<column defaultValueNumeric="0" name="version" type="INT" />
+			<column name="strasse" type="varchar(255)"></column>
+			<column name="hausnummer" type="varchar(255)"></column>
+			<column name="plz" type="varchar(5)"></column>
+			<column name="ort" type="varchar(255)"></column>
+			<column name="adresse_typ" type="varchar(255)"></column>
+			<column name="land" type="varchar(2)"></column>
+			<column name="person_id" type="BIGINT"></column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="ahmalk" id="anlage_struktur_indizes">
+		<createIndex indexName="fk_person_kontakt_idx"
+			tableName="kunde_kontakt">
+			<column name="person_id" />
+		</createIndex>
+		<createIndex indexName="fk_person_adresse_idx"
+			tableName="kunde_adresse">
+			<column name="person_id" />
+		</createIndex>
+
+		<addForeignKeyConstraint
+			baseColumnNames="person_id" baseTableName="kunde_kontakt"
+			constraintName="fk_person_kontakt_idx" deferrable="false"
+			initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="kunde_person" />
+		<addForeignKeyConstraint
+			baseColumnNames="person_id" baseTableName="kunde_adresse"
+			constraintName="fk_person_adresse_idx" deferrable="false"
+			initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+			referencedColumnNames="id" referencedTableName="kunde_person" />
+
+
+	</changeSet>
+
+
+</databaseChangeLog>
